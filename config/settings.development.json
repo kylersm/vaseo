@@ -9,5 +9,20 @@
     { "name": "Bicycle", "quantity": 2, "owner": "john@foo.com", "condition": "poor" },
     { "name": "Banana", "quantity": 2, "owner": "admin@foo.com", "condition": "good" },
     { "name": "Boogie Board", "quantity": 2, "owner": "admin@foo.com", "condition": "excellent" }
+  ],
+
+  "defaultReports": [
+    {
+      "currentCosts": 0,
+      "projectedCosts": 0,
+      "submissionDate": "2024-06-01T00:00:00Z",
+      "deadlineDate": "2024-06-30T00:00:00Z",
+      "category": "People",
+      "severity": "High",
+      "contractAmount": 0,
+      "totalPaid": 0,
+      "description": "A report summarizing the inventory status for the month.",
+      "owner": "admin@foo.com"
+    }
   ]
 }

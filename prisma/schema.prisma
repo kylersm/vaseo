@@ -43,3 +43,59 @@ model Stuff {
   condition Condition @default(good)
   owner     String
 }
+
+enum Category {
+  People
+  Process
+  Technology
+}
+
+enum Severity {
+  Low
+  Medium
+  High
+}
+
+model Report {
+  id             Int        @id @default(autoincrement())
+  currentCosts   Int
+  projectedCosts Int
+  submissionDate DateTime
+  deadlineDate   DateTime
+  category       Category
+  severity       Severity
+  description    String
+  issue          Issue[]    @relation("Issue")
+  contractAmount Int
+  totalPaid      Int
+  owner          String
+}
+
+enum Impact {
+  Low
+  Medium
+  High
+}
+
+enum Likelihood {
+  Low
+  Medium
+  High
+}
+
+enum Status {
+  Open
+  Closed
+}
+
+model Issue {
+  id             Int        @id @default(autoincrement())
+  reportId       Int
+  description    String
+  impact         Impact
+  likelihood     Likelihood
+  startdate      DateTime
+  recommendation String
+  status         Status
+  Report         Report     @relation("Issue", fields: [reportId], references: [id])
+}
