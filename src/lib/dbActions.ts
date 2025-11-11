@@ -79,14 +79,6 @@ export async function addReport(report: {
   totalPaid: number;
   description: string;
   owner: string;
-  issues?: {
-    description: string;
-    status: string;
-    impact: string;
-    likelihood: string;
-    startdate: string;
-    recommendation: string;
-  }[];
 }) {
   // console.log(`addReport data: ${JSON.stringify(report, null, 2)}`);
   let category: Category = 'People';
@@ -105,7 +97,7 @@ export async function addReport(report: {
   } else if (report.severity === 'Low') {
     severity = 'Low';
   }
-  const created = await prisma.report.create({
+  await prisma.report.create({
     data: {
       currentCosts: report.currentCosts,
       projectedCosts: report.projectedCosts,
@@ -119,35 +111,6 @@ export async function addReport(report: {
       owner: report.owner,
     },
   });
-
-  // If nested issues were provided, create them attached to the created report.
-  if (report.issues && report.issues.length > 0) {
-    const promises = report.issues.map((iss) => {
-      let impact: Impact = 'Low';
-      if (iss.impact === 'Medium') impact = 'Medium';
-      else if (iss.impact === 'High') impact = 'High';
-
-      let likelihood: Likelihood = 'Low';
-      if (iss.likelihood === 'Medium') likelihood = 'Medium';
-      else if (iss.likelihood === 'High') likelihood = 'High';
-
-      let status: Status = 'Open';
-      if (iss.status === 'Closed') status = 'Closed';
-
-      return prisma.issue.create({
-        data: {
-          description: iss.description,
-          status,
-          reportId: created.id,
-          impact,
-          likelihood,
-          startdate: new Date(iss.startdate),
-          recommendation: iss.recommendation,
-        },
-      });
-    });
-    await Promise.all(promises);
-  }
   // After adding, redirect to the list page
   redirect('/list');
 }
